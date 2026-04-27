@@ -5,16 +5,17 @@ public class csvReader
 {
     private List<List<String>> csv; // belongs to object, csvReader.csv
 
-    public csvReader() // constructor, reads the csv
+    // constructor, gets data to use in everything else and opens the csv
+    public csvReader() 
     {
         String currentLineColour = ""; // what colour is the line? will use later
 
         csv = new ArrayList<List<String>>(); // array list for the csv, creates storage we can reference as field
-        try (BufferedReader br = new BufferedReader(new FileReader("Metrolink_times_linecolour(in).csv"))) 
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath)))  
         {
-            // open the file and then auto closes it
+            // open the file and then auto closes it, changed to any file in case they test dif files
 
-            String line = ""; // becomes read line in loops
+            String line; // becomes read line in loops
 
             while ((line = br.readLine()) != null) // read line and stop when no lines left
             {
@@ -28,14 +29,25 @@ public class csvReader
 
     }
 
-    public static boolean isValidStation(String station, ArrayList<String> stations) // is the station valid? user input + all stations
+    // has to be called after csvReader is created in main, otherwise csv fails to exist and it tweaks out
+    public static boolean isValidStation(String station) // is the station valid? user input + all stations
     {
-        for (String validStation : stations) // go through station 1-by-1
+        for (List<String> row : csv) // go through station 1-by-1
         {
-            if (validStation.equalsIgnoreCase(station)) // ignore capitals
+           if (row.size() >= 3) // no small or big rows to fuck shit up, ignores the colours for now
+           {
+            String from = row.get(0).trim(); // start station
+            String to = row.get(1).trim(); // end station
+            String time = row.get(2).trim(); // time, trim on all rows gets rid of spacing
+
+            if (!time.isEmpty()) // ignore invalid rows
             {
-                return true;
+                if (from.equalsIgnoreCase(station) || to.equalsIgnoreCase(station)) // capitals are irrelevant so long as case matches
+                {
+                    return true;
+                }
             }
+           }
         }
         return false; // otherwise, return false
     }
@@ -43,7 +55,7 @@ public class csvReader
 
 
     // user input method
-    public static String[] metroQuery() // return string multiple so that we can have both scanned outputs
+    public static String[] metroQuery(csvReader reader) // return string multiple so that we can have both scanned outputs, pull straight from file
     {
         Scanner metroInput = new Scanner(System.in); // new scanner for input
         String metroStart; // declare so scope doesn't fuck shit up and delete it
@@ -52,11 +64,11 @@ public class csvReader
             System.out.println("Enter starting destination: "); // print new line
             String metroStart = metroInput.nextLine();
 
-            if (!isValidStation(metroStart,csv)) // if it isn't
+            if (!reader.isValidStation(metroStart)) // if it isn't
             {
                 System.out.println("First destination isn't valid: " + metroStart); // give the message if it isn't right, return to while loop
             }
-        } while (!isValidStation(metroStart,csv)); // loop until it's right
+        } while (!reader.isValidStation(metroStart)); // loop until it's right
         System.out.println("First destination is valid: " + metroStart); // okay, it's now right, next steps
 
         String metroEnd; // no fucking shit up scope!
@@ -65,11 +77,11 @@ public class csvReader
             System.out.println("Enter ending destination: "); // print new line
             String metroEnd = metroInput.nextLine();
 
-            if (!isValidStation(metroEnd,csv))
+            if (!reader.isValidStation(metroEnd))
             {
                 System.out.println("Last destination isn't valid: " + metroEnd);
             }
-        } while (!isValidStation(metroEnd,csv)); // loop until it's right again
+        } while (!reader.isValidStation(metroEnd)); // loop until it's right again
         System.out.println("Last destination is valid: " + metroEnd);
 
         return new String[]{metroStart, metroEnd}; // returns string with start and end, can use later in main
