@@ -3,34 +3,39 @@ import java.io.*; // io, for bufferedreader, filereader, ioexception and input s
 
 public class csvReader
 {
+    // csv reader methods
     private List<List<String>> csv; // belongs to object, csvReader.csv
+    private List<String> parseLine(String line) // parse line function, splits line with , used in csvreader
+    {
+        return Arrays.asList(line.split(","));
+    }
 
     // constructor, gets data to use in everything else and opens the csv
-    public csvReader() 
+    public csvReader(String filePath)  // give filepath string to use with filereader
     {
         String currentLineColour = ""; // what colour is the line? will use later
 
         csv = new ArrayList<List<String>>(); // array list for the csv, creates storage we can reference as field
         try (BufferedReader br = new BufferedReader(new FileReader(filePath)))  
         {
-            // open the file and then auto closes it, changed to any file in case they test dif files
+            // open the file and then auto closes it, changed to any file in case they test dif files, string filepath because not defined
 
             String line; // becomes read line in loops
 
             while ((line = br.readLine()) != null) // read line and stop when no lines left
             {
-                csv.add(parseLine(line)); // for each line, convert into list per comma and add to main list
+                csv.add(parseLine(line)); // use parse function method to split
             }
         } catch (IOException csvError)
         {
             System.out.println("Error reading CSV file.");
-            csvError.printStackTrace
+            csvError.printStackTrace();
         }
 
     }
 
     // has to be called after csvReader is created in main, otherwise csv fails to exist and it tweaks out
-    public static boolean isValidStation(String station) // is the station valid? user input + all stations
+    public boolean isValidStation(String station) // is the station valid? user input + all stations
     {
         for (List<String> row : csv) // go through station 1-by-1
         {
@@ -55,14 +60,14 @@ public class csvReader
 
 
     // user input method
-    public static String[] metroQuery(csvReader reader) // return string multiple so that we can have both scanned outputs, pull straight from file
+    public String[] metroQuery() // return string multiple so that we can have both scanned outputs, pull straight from file
     {
         Scanner metroInput = new Scanner(System.in); // new scanner for input
         String metroStart; // declare so scope doesn't fuck shit up and delete it
         do
         {
             System.out.println("Enter starting destination: "); // print new line
-            String metroStart = metroInput.nextLine();
+            metroStart = metroInput.nextLine(); // already declared, writes input to start
 
             if (!reader.isValidStation(metroStart)) // if it isn't
             {
@@ -75,7 +80,7 @@ public class csvReader
         do
         {
             System.out.println("Enter ending destination: "); // print new line
-            String metroEnd = metroInput.nextLine();
+            metroEnd = metroInput.nextLine(); // same as start
 
             if (!reader.isValidStation(metroEnd))
             {

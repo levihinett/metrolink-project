@@ -9,8 +9,11 @@ public class Main
     {
         csvReader reader = new csvReader("Metrolink_times_linecolour(in).csv"); // metrolink file now attached for testing
 
-        String[] userInput = csvReader.metroQuery(); // get user inputs
+        String[] userInput = reader.metroQuery(); // get user inputs
+
         String metroStart = userInput[0]; // start location
         String metroEnd = userInput[1]; // end
+
+
     }
 }
