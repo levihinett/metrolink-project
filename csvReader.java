@@ -10,10 +10,14 @@ public class csvReader
         return Arrays.asList(line.split(","));
     }
 
+    // metroGraph methods
+    private metroGraph graph; // new graph, to store stations for connections
+
     // constructor, gets data to use in everything else and opens the csv
     public csvReader(String filePath)  // give filepath string to use with filereader
     {
-        String currentLineColour = ""; // what colour is the line? will use later
+        graph = new metroGraph(); 
+        String currentLineColour = "";
 
         csv = new ArrayList<List<String>>(); // array list for the csv, creates storage we can reference as field
         try (BufferedReader br = new BufferedReader(new FileReader(filePath)))  
@@ -24,7 +28,23 @@ public class csvReader
 
             while ((line = br.readLine()) != null) // read line and stop when no lines left
             {
-                csv.add(parseLine(line)); // use parse function method to split
+                List<String> row = parseLine(line);
+
+                // make sure row has enough columns otherwise colour
+                if (row.size() >= 2 && row.get(1).trim().isEmpty())
+                {   // if second line is empty, it's a colour
+                    currentLineColour = row.get(0).trim();
+                }
+                else if (row.size() >= 3 && !row.get(2).trim().isEmpty()) // make sure it also has time
+                {
+                    String from = row.get(0).trim();
+                    String to = row.get(1).trim();
+                    int time = Integer.parseInt(row.get(2).trim());
+
+                    graph.addConnection(from, to, time, currentLineColour);
+                }
+
+                csv.add(row); // use parse function method to split
             }
         } catch (IOException csvError)
         {
@@ -90,6 +110,13 @@ public class csvReader
         System.out.println("Last destination is valid: " + metroEnd);
 
         return new String[]{metroStart, metroEnd}; // returns string with start and end, can use later in main
+    }
+
+    // getters
+    // metrograph getter
+    public metroGraph getGraph()
+    { // called further up, java compiles all at once
+        return graph;
     }
 
 }
