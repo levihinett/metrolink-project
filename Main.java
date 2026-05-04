@@ -11,6 +11,6 @@ public class Main
         metroGraph graph = reader.getGraph();
         routeChecker checker = new routeChecker(graph);
 
-        checker.findShortestRoute("Bury", "Whitefield");
+        checker.findShortestRoute("Radcliffe", "Navigation Road");
     }
 }
