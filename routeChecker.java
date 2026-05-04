@@ -88,7 +88,7 @@ public class routeChecker
         {
             String from = route.get(i); // nowStation
             String to = route.get(i + 1); // laterStation
-            String line = previousLine.get.to(); // line used on the next stop
+            String line = previousLine.get(to); // line used on the next stop
 
             // check if the line has changed
             if (lastLine != null && !lastLine.equals(line))
