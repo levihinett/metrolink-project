@@ -9,7 +9,7 @@ public class metroGraph
         graph = new HashMap<>(); // create new map
     }
 
-    public void addConnection(String from, String to, int time, String line)
+    public void addConnection(String from, String to, double time, String line)
     {
         graph.putIfAbsent(from, new ArrayList<>()); // if it isn't in the graph, make it
         graph.putIfAbsent(to, new ArrayList<>()); 
