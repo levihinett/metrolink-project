@@ -29,7 +29,12 @@ public class csvReader
             while ((line = br.readLine()) != null) // read line and stop when no lines left
             {
                 List<String> row = parseLine(line);
+                csv.add(row); // store the raw in full
 
+                if (row.size() >= 3 && row.get(2).trim().equalsIgnoreCase("Time (mins)"))
+                {
+                    continue; // if it's the header, ends with Time (mins), skip it
+                }
                 // make sure row has enough columns otherwise colour
                 if (row.size() >= 2 && row.get(1).trim().isEmpty())
                 {   // if second line is empty, it's a colour
@@ -44,7 +49,6 @@ public class csvReader
                     graph.addConnection(from, to, time, currentLineColour);
                 }
 
-                csv.add(row); // use parse function method to split
             }
         } catch (IOException csvError)
         {
