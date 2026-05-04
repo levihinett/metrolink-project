@@ -18,8 +18,13 @@ public class metroGraph
         graph.get(to).add(new Edge(from, time, line)); // backward connection as tram can move back and forth
     }
 
+    // getters
     public ArrayList<Edge> getConnections(String station)
     {
         return graph.getOrDefault(station, new ArrayList<>());
+    }
+    public Set<String> getStations()
+    { // no duplicate stations
+        return graph.keySet(); // all station names
     }
 }

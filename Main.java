@@ -8,13 +8,9 @@ public class Main
     public static void main(String[] args)
     {
         csvReader reader = new csvReader("Metrolink_times_linecolour(in).csv");
-
         metroGraph graph = reader.getGraph();
+        routeChecker checker = new routeChecker(graph);
 
-        System.out.println("Connections from Firswood: ");
-        for (Edge edge : graph.getConnections("Firswood"))
-        {
-            System.out.println(edge.to + " | " + edge.time + " mins | " + edge.line);
-        }
+        checker.findShortestRoute("Bury", "Whitefield");
     }
 }
