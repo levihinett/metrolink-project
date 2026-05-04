@@ -69,11 +69,11 @@ public class csvReader
             System.out.println("Enter starting destination: "); // print new line
             metroStart = metroInput.nextLine(); // already declared, writes input to start
 
-            if (!reader.isValidStation(metroStart)) // if it isn't
+            if (!isValidStation(metroStart)) // if it isn't
             {
                 System.out.println("First destination isn't valid: " + metroStart); // give the message if it isn't right, return to while loop
             }
-        } while (!reader.isValidStation(metroStart)); // loop until it's right
+        } while (!isValidStation(metroStart)); // loop until it's right
         System.out.println("First destination is valid: " + metroStart); // okay, it's now right, next steps
 
         String metroEnd; // no fucking shit up scope!
@@ -82,11 +82,11 @@ public class csvReader
             System.out.println("Enter ending destination: "); // print new line
             metroEnd = metroInput.nextLine(); // same as start
 
-            if (!reader.isValidStation(metroEnd))
+            if (!isValidStation(metroEnd))
             {
                 System.out.println("Last destination isn't valid: " + metroEnd);
             }
-        } while (!reader.isValidStation(metroEnd)); // loop until it's right again
+        } while (!isValidStation(metroEnd)); // loop until it's right again
         System.out.println("Last destination is valid: " + metroEnd);
 
         return new String[]{metroStart, metroEnd}; // returns string with start and end, can use later in main

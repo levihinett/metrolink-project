@@ -10,7 +10,7 @@ public class Main
         metroGraph graph = new metroGraph();
 
         graph.addConnection("Bury", "Radcliffe", 6, "yellow"); // b to r, 6m yellow route
-        graph.addConnection("Radcliffe", "Whitefield", 3, "yellow") // r, can go back on b, goes to w, 3m yellow
+        graph.addConnection("Radcliffe", "Whitefield", 3, "yellow"); // r, can go back on b, goes to w, 3m yellow
 
         for (Edge edge : graph.getConnections("Radcliffe"))
         {
