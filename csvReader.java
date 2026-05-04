@@ -44,8 +44,7 @@ public class csvReader
                 {
                     String from = row.get(0).trim();
                     String to = row.get(1).trim();
-                    int time = Integer.parseInt(row.get(2).trim());
-
+                    double time = Double.parseDouble(row.get(2).trim()); // double because decimals 
                     graph.addConnection(from, to, time, currentLineColour);
                 }
 
