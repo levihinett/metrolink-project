@@ -7,23 +7,14 @@ public class Main
 {
     public static void main(String[] args)
     {
-        metroGraph graph = new metroGraph();
+        csvReader reader = new csvReader("Metrolink_times_linecolour(in).csv");
 
-        graph.addConnection("Bury", "Radcliffe", 6, "yellow"); // b to r, 6m yellow route
-        graph.addConnection("Radcliffe", "Whitefield", 3, "yellow"); // r, can go back on b, goes to w, 3m yellow
+        metroGraph graph = reader.getGraph();
 
-        for (Edge edge : graph.getConnections("Radcliffe"))
+        System.out.println("Connections from Firswood: ");
+        for (Edge edge : graph.getConnections("Firswood"))
         {
-            System.out.println(edge.to + " " + edge.time + " " + edge.line);
+            System.out.println(edge.to + " | " + edge.time + " mins | " + edge.line);
         }
-
-        //csvReader reader = new csvReader("Metrolink_times_linecolour(in).csv"); // metrolink file now attached for testing
-
-        //String[] userInput = reader.metroQuery(); // get user inputs
-
-        //String metroStart = userInput[0]; // start location
-        //String metroEnd = userInput[1]; // end
-
-
     }
 }
